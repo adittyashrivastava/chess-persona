@@ -1,0 +1,3 @@
+{"run": "main_board", "opp_elo": 1700, "games": 80, "score": 0.86875, "perf_elo": 2028, "aggression": 0.438, "guard": "stockfish", "style": "unknown", "adapter": "", "margin_cp": 100}
+{"run": "main_board", "opp_elo": 1700, "games": 80, "score": 0.90625, "perf_elo": 2094, "aggression": 0.428, "guard": "stockfish", "style": "steady", "adapter": "", "margin_cp": 100}
+{"run": "main_board", "opp_elo": 1700, "games": 80, "score": 0.9, "perf_elo": 2082, "aggression": 0.459, "guard": "stockfish", "style": "aggressive", "adapter": "", "margin_cp": 100}

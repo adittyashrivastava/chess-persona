@@ -1,0 +1,3 @@
+121332 games, 8155187 plies; max length 307
+move kinds checked: {'move': 7950301, 'castle': 179695, 'ep': 3496, 'promo_q': 20660, 'promo_b': 126, 'promo_r': 675, 'promo_n': 234}
+checked 8155187 positions in 1974.6s: 8155187/8155187 exact; max float drift 1.19e-07

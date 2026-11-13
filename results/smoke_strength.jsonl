@@ -1,0 +1,2 @@
+{"run": "pilot_board", "opp_elo": 1400, "games": 8, "score": 0.0625, "perf_elo": 930, "aggression": 0.211, "guard": "none", "style": "unknown", "adapter": ""}
+{"run": "pilot_noboard", "opp_elo": 1400, "games": 8, "score": 0.0, "perf_elo": 602, "aggression": 0.283, "guard": "none", "style": "unknown", "adapter": ""}

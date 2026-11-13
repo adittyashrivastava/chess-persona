@@ -1,0 +1,103 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>figures</title>
+<style>
+  :root { --bg:#141414; --panel:#1d1d1d; --ink:#ecebe6; --muted:#9b9a93; --line:#2e2e2c;
+          --a:#7fa6ff; --b:#5a5a55; --tal:#f5a623; --kas:#3ecf8e; --bad:#ff7a6b; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  .fig { width:1200px; padding:40px 48px; box-sizing:border-box; background:var(--bg); }
+  h1 { font-size:30px; margin:0 0 6px; } .sub { color:var(--muted); font-size:18px; margin-bottom:28px; }
+  /* pipeline */
+  .pipe { display:flex; align-items:stretch; gap:18px; }
+  .stage { flex:1; background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:22px; }
+  .stage .n { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; margin-bottom:12px; }
+  .stage h2 { margin:0 0 6px; font-size:22px; } .stage p { margin:0; color:var(--muted); font-size:16px; }
+  .stage .big { font-size:34px; font-weight:800; margin:14px 0 2px; } .stage .unit { color:var(--muted); font-size:14px; }
+  .arrow { display:flex; align-items:center; color:var(--muted); font-size:34px; }
+  .tok { display:flex; gap:6px; flex-wrap:wrap; margin-top:14px; }
+  .tok span { font-family:ui-monospace, Menlo, monospace; font-size:14px; padding:4px 8px; border-radius:6px; background:#2a2f3d; color:var(--a); }
+  /* bars */
+  .chart { display:grid; grid-template-columns:190px 1fr; row-gap:14px; column-gap:16px; align-items:center; }
+  .lbl { color:var(--muted); font-size:17px; text-align:right; }
+  .bars { display:flex; flex-direction:column; gap:5px; }
+  .bar { height:26px; border-radius:6px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; font-weight:700; font-size:15px; color:#111; }
+  .legend { display:flex; gap:22px; margin-bottom:22px; color:var(--muted); }
+  .legend i { display:inline-block; width:14px; height:14px; border-radius:3px; margin-right:6px; vertical-align:-2px; }
+  .twin { display:grid; grid-template-columns:1fr 1fr; gap:40px; }
+  .twin h3 { margin:0 0 16px; font-size:19px; }
+  /* delta grid */
+  .grid { display:grid; grid-template-columns:220px 1fr 1fr; gap:12px; }
+  .cell { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px; text-align:center; }
+  .cell .v { font-size:40px; font-weight:800; } .cell .s { color:var(--muted); font-size:14px; }
+  .head { color:var(--muted); font-size:16px; display:flex; align-items:center; justify-content:center; text-align:center; }
+  .stat { display:flex; gap:18px; }
+  .stat .cell { flex:1; }
+</style></head>
+<body>
+
+<div class="fig" id="pipeline">
+  <h1>Three steps, one weekend</h1>
+  <div class="sub">Pretrain a move-predictor, give it an exact board in memory, then teach it whose games to play like.</div>
+  <div class="pipe">
+    <div class="stage"><div class="n" style="background:#2f6fed">1</div><h2>Pretrain</h2>
+      <p>Every move is one token. Predict the next move.</p>
+      <div class="big">5.3M</div><div class="unit">Lichess games (Jan 2017)</div>
+      <div class="tok"><span>e2e4</span><span>c7c5</span><span>g1f3</span><span>…</span></div></div>
+    <div class="arrow">→</div>
+    <div class="stage"><div class="n" style="background:#7a6ff0">2</div><h2>Add memory</h2>
+      <p>A hand-built Gated DeltaNet layer keeps the board in its state. No training.</p>
+      <div class="big">8,155,187</div><div class="unit">positions checked: all exact</div></div>
+    <div class="arrow">→</div>
+    <div class="stage"><div class="n" style="background:#f5a623;color:#111">3</div><h2>Add personality</h2>
+      <p>Small LoRA adapters trained only on one player's moves.</p>
+      <div class="big">Tal · Kasparov</div><div class="unit">rank-8 adapters on a frozen model</div></div>
+  </div>
+</div>
+
+<div class="fig" id="memory">
+  <h1>The exact board helps most in long games</h1>
+  <div class="sub">Same 27M model, same data, same 20k steps. Only difference: does it get the board from memory?</div>
+  <div class="legend"><span><i style="background:var(--a)"></i>with the memory board</span><span><i style="background:var(--b)"></i>moves only</span></div>
+  <div class="twin">
+    <div><h3>Picks the move the human played (higher is better)</h3>
+      <div class="chart" id="top1"></div></div>
+    <div><h3>Top choice is an illegal move (lower is better)</h3>
+      <div class="chart" id="illegal"></div></div>
+  </div>
+</div>
+
+<div class="fig" id="personas">
+  <h1>Each adapter predicts its own player best</h1>
+  <div class="sub">Change in move-match vs the base model, in percentage points, on held-out games (89M model). Small, but in the right direction.</div>
+  <div class="grid">
+    <div></div><div class="head">on Tal's games</div><div class="head">on Kasparov's games</div>
+    <div class="head" style="justify-content:flex-end;color:var(--tal);font-weight:700">Tal adapter</div>
+    <div class="cell" style="border-color:var(--tal)"><div class="v" style="color:var(--tal)">+0.5</div><div class="s">44.3% vs 43.8%</div></div>
+    <div class="cell"><div class="v" style="color:var(--muted)">−0.3</div><div class="s">42.6% vs 42.9%</div></div>
+    <div class="head" style="justify-content:flex-end;color:var(--kas);font-weight:700">Kasparov adapter</div>
+    <div class="cell"><div class="v" style="color:var(--muted)">−0.7</div><div class="s">43.1% vs 43.8%</div></div>
+    <div class="cell" style="border-color:var(--kas)"><div class="v" style="color:var(--kas)">+1.5</div><div class="s">44.4% vs 42.9%</div></div>
+  </div>
+</div>
+
+<div class="fig" id="elo">
+  <h1>What each step bought</h1>
+  <div class="sub">Head-to-head matches, 200 games each.</div>
+  <div class="stat">
+    <div class="cell"><div class="v" style="color:var(--a)">+89 Elo</div><div class="s">memory board vs moves only (27M)<br>76 wins · 98 draws · 26 losses</div></div>
+    <div class="cell"><div class="v" style="color:var(--a)">+137 Elo</div><div class="s">89M vs 27M, both with the board<br>104 wins · 67 draws · 29 losses</div></div>
+    <div class="cell"><div class="v" style="color:var(--a)">48.1%</div><div class="s">89M picks the human's move<br>illegal top choice: 0.6%</div></div>
+  </div>
+</div>
+
+<script>
+function bars(id, rows, max, fmt) {
+  const el = document.getElementById(id);
+  const one = (v, bg, fg) => v / max < 0.15
+    ? `<div style="display:flex;align-items:center;gap:8px"><div class="bar" style="width:${Math.max(v / max * 100, 1)}%;background:${bg}"></div><b style="color:var(--ink);font-size:15px">${fmt(v)}</b></div>`
+    : `<div class="bar" style="width:${v / max * 100}%;background:${bg};color:${fg}">${fmt(v)}</div>`;
+  el.innerHTML = rows.map(([l, a, b]) => `<div class="lbl">${l}</div><div class="bars">${one(a, "var(--a)", "#111")}${one(b, "var(--b)", "var(--ink)")}</div>`).join("");
+}
+bars("top1", [["half-moves 1–20", 49.7, 49.4], ["half-moves 41–80", 38.0, 35.0], ["half-moves 81+", 42.0, 37.1], ["all", 43.4, 41.3]], 52, v => v.toFixed(1) + "%");
+bars("illegal", [["half-moves 1–20", 0.09, 0.10], ["half-moves 41–80", 3.2, 4.8], ["half-moves 81+", 4.9, 9.2], ["all", 1.9, 3.1]], 9.6, v => v + "%");
+</script>
+</body></html>

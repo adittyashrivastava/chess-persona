@@ -1,0 +1,9 @@
+{"run": "main_board", "opp_elo": 1400, "games": 40, "score": 0.1375, "perf_elo": 1081, "aggression": 0.324, "guard": "none", "style": "unknown", "adapter": ""}
+{"run": "main_board", "opp_elo": 1700, "games": 40, "score": 0.0625, "perf_elo": 1230, "aggression": 0.265, "guard": "none", "style": "unknown", "adapter": ""}
+{"run": "main_board", "opp_elo": 2000, "games": 40, "score": 0.0375, "perf_elo": 1436, "aggression": 0.298, "guard": "none", "style": "unknown", "adapter": ""}
+{"run": "main_noboard", "opp_elo": 1400, "games": 40, "score": 0.15, "perf_elo": 1099, "aggression": 0.418, "guard": "none", "style": "unknown", "adapter": ""}
+{"run": "main_noboard", "opp_elo": 1700, "games": 40, "score": 0.05, "perf_elo": 1188, "aggression": 0.282, "guard": "none", "style": "unknown", "adapter": ""}
+{"run": "main_noboard", "opp_elo": 2000, "games": 40, "score": 0.0625, "perf_elo": 1530, "aggression": 0.281, "guard": "none", "style": "unknown", "adapter": ""}
+{"run": "big_board", "opp_elo": 1400, "games": 40, "score": 0.3375, "perf_elo": 1283, "aggression": 0.404, "guard": "none", "style": "unknown", "adapter": "", "margin_cp": 50}
+{"run": "big_board", "opp_elo": 1700, "games": 40, "score": 0.1125, "perf_elo": 1341, "aggression": 0.324, "guard": "none", "style": "unknown", "adapter": "", "margin_cp": 50}
+{"run": "big_board", "opp_elo": 2000, "games": 40, "score": 0.05, "perf_elo": 1488, "aggression": 0.288, "guard": "none", "style": "unknown", "adapter": "", "margin_cp": 50}

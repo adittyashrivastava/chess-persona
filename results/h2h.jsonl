@@ -1,0 +1,2 @@
+{"run_a": "main_board", "run_b": "main_noboard", "games": 200, "wins_a": 76, "draws": 98, "losses_a": 26, "score_a": 0.625, "elo_diff": 89, "elo_95ci": [40, 141]}
+{"run_a": "big_board", "run_b": "main_board", "games": 200, "wins_a": 104, "draws": 67, "losses_a": 29, "score_a": 0.688, "elo_diff": 137, "elo_95ci": [87, 192]}
